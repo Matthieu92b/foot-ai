@@ -1,0 +1,21 @@
+name: 💡 Idée / tâche
+description: Une idée brute — le Planner la transforme en ticket propre
+labels: ["idée"]
+body:
+  - type: textarea
+    id: quoi
+    attributes:
+      label: Ce que je veux
+      description: Décris librement, même en vrac.
+    validations:
+      required: true
+  - type: dropdown
+    id: domaine
+    attributes:
+      label: Domaine
+      options: [ml, ai, backend, frontend, ui, infra, docs]
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Phase
+      options: [phase-0, phase-1, phase-2, phase-3, phase-4, phase-5, phase-6, phase-7, phase-8]

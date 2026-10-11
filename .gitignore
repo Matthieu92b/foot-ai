@@ -1,0 +1,17 @@
+data/*
+!data/.gitkeep
+*.mp4
+*.mov
+*.pt
+*.onnx
+runs/
+mlruns/
+__pycache__/
+.venv/
+.env
+node_modules/
+dist/
+target/
+.idea/
+.vscode/
+infra/n8n/.env
