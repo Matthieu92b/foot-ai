@@ -63,7 +63,7 @@ def get_video_info(path: str | Path) -> VideoInfo:
 
 def format_duration(seconds: float) -> str:
     """Formate une durée en secondes au format mm:ss."""
-    total = int(round(seconds))
+    total = round(seconds)
     return f"{total // 60:02d}:{total % 60:02d}"
 
 
