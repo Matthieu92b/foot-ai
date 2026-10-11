@@ -10,7 +10,6 @@ concurrency:
 
 jobs:
   plan:
-    # Uniquement quand on ajoute le label "idée", et si l'issue n'est pas déjà planifiée
     if: >
       github.event.label.name == 'idée' &&
       !contains(github.event.issue.labels.*.name, 'planifié')
@@ -20,24 +19,36 @@ jobs:
       contents: read
       issues: write
       id-token: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ISSUE: ${{ github.event.issue.number }}
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 1
+
+      # 1. On récupère l'issue nous-mêmes et on la donne à Claude dans un fichier
+      - name: Récupérer l'issue
+        run: gh issue view "$ISSUE" --json title,body,labels > issue.json
+
+      # 2. Claude lit et écrit uniquement des fichiers
       - uses: anthropics/claude-code-action@v1
-        env:
-          GH_TOKEN: ${{ github.token }}
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          show_full_output: true
           prompt: |
-            Tu es l'agent Planner du projet. Suis exactement les consignes de docs/prompts/planner.md.
-            1. Lis l'issue avec : gh issue view ${{ github.event.issue.number }}
-            2. Lis CLAUDE.md et AGENTS.md pour le contexte du projet.
-            3. Écris le plan dans plan.md, au format demandé par docs/prompts/planner.md.
-            4. Publie-le : gh issue comment ${{ github.event.issue.number }} --body-file plan.md
-            5. Ajoute le label : gh issue edit ${{ github.event.issue.number }} --add-label "planifié"
-            Ne modifie aucun autre fichier du repo. Ne code rien.
+            Tu es l'agent Planner du projet.
+            Lis issue.json (l'idée brute), CLAUDE.md, AGENTS.md et docs/prompts/planner.md.
+            Écris le plan dans le fichier plan.md, exactement au format de docs/prompts/planner.md.
+            N'écris aucun autre fichier. Ne code rien.
           claude_args: >-
             --model claude-sonnet-5-5 --max-turns 10
-            --allowedTools "Read,Write(plan.md),Bash(gh issue view:*),Bash(gh issue comment:*),Bash(gh issue edit:*)"
+            --allowedTools "Read,Write"
+
+      # 3. Le workflow publie le plan (déterministe)
+      - name: Publier le plan
+        run: |
+          if [ ! -s plan.md ]; then
+            echo "plan.md absent ou vide"; exit 1
+          fi
+          gh issue comment "$ISSUE" --body-file plan.md
+          gh issue edit "$ISSUE" --add-label "planifié"
