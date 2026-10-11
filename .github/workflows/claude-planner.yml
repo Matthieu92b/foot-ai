@@ -29,6 +29,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          show_full_output: true
           prompt: |
             Tu es l'agent Planner du projet. Suis exactement les consignes de docs/prompts/planner.md.
             1. Lis l'issue avec : gh issue view ${{ github.event.issue.number }}
