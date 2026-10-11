@@ -4,6 +4,7 @@
 Usage :
     pip install ultralytics supervision
     python track.py --source match.mp4
+    python track.py --source match.mp4 --max-frames 100   # test rapide : 100 premières frames
 
 Sorties :
     output.mp4  -> vidéo annotée (ellipse + ID sous chaque joueur, triangle sur le ballon)
@@ -26,6 +27,7 @@ def main():
     p.add_argument("--csv", default="tracks.csv")
     p.add_argument("--model", default="yolo11m.pt", help="yolo11n.pt si pas de GPU")
     p.add_argument("--conf", type=float, default=0.3)
+    p.add_argument("--max-frames", type=int, default=None, help="ne traiter que les N premières frames (défaut : toute la vidéo)")
     args = p.parse_args()
 
     model = YOLO(args.model)
@@ -75,6 +77,8 @@ def main():
             sink.write_frame(frame)
             if i % 50 == 0:
                 print(f"frame {i}/{info.total_frames}")
+            if args.max_frames is not None and i + 1 >= args.max_frames:
+                break
 
     print(f"OK -> {args.output} + {args.csv}")
 
