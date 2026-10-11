@@ -9,7 +9,7 @@ Issue (label idée) → Planner → ✋ "@claude go" → Dev → PR → CI → R
 
 | Agent | Version | Déclencheur | Entrées | Sorties | Droits | Garde-fous |
 |---|---|---|---|---|---|---|
-| **Planner** | V1 | Issue avec label `idée` (n8n) | Titre + description de l'issue | Commentaire : user story, critères d'acceptation, sous-tâches, estimation, risques. Label `planifié` | Commenter, poser des labels | Ne code jamais. Pose des questions si le ticket est flou |
+| **Planner** | V1 | Issue avec label `idée` (`claude-planner.yml`) | Titre + description de l'issue | Commentaire : user story, critères d'acceptation, sous-tâches, estimation, risques. Label `planifié` | Commenter, poser des labels | Ne code jamais. Pose des questions si le ticket est flou |
 | **Dev** | V1 | Commentaire `@claude` sur une issue/PR (`claude.yml`) | Issue + plan du Planner + `CLAUDE.md` | Branche `claude/...` + PR liée à l'issue | Pousse sur sa branche uniquement | Jamais sur `main`. Ne modifie pas `ml/core/` sauf demande explicite. PR < ~400 lignes |
 | **Reviewer** | V1 | PR ouverte/mise à jour (`claude-review.yml`) | Diff + issue liée | Commentaires inline ou résumé | Lecture + commentaires | Ne modifie pas le code |
 | **Tester** | V2 (phase 3) | CI en échec / label `tests` | Logs CI + diff | Tests ajoutés ou diagnostic | Pousse sur la branche de la PR | N'efface jamais un test existant pour faire passer la CI |

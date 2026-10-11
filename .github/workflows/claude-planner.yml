@@ -1,0 +1,42 @@
+# Agent Planner — transforme une idée brute (label "idée") en ticket planifié
+name: Claude Planner
+on:
+  issues:
+    types: [labeled]
+
+concurrency:
+  group: planner-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    # Uniquement quand on ajoute le label "idée", et si l'issue n'est pas déjà planifiée
+    if: >
+      github.event.label.name == 'idée' &&
+      !contains(github.event.issue.labels.*.name, 'planifié')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+      - uses: anthropics/claude-code-action@v1
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            Tu es l'agent Planner du projet. Suis exactement les consignes de docs/prompts/planner.md.
+            1. Lis l'issue avec : gh issue view ${{ github.event.issue.number }}
+            2. Lis CLAUDE.md et AGENTS.md pour le contexte du projet.
+            3. Écris le plan dans plan.md, au format demandé par docs/prompts/planner.md.
+            4. Publie-le : gh issue comment ${{ github.event.issue.number }} --body-file plan.md
+            5. Ajoute le label : gh issue edit ${{ github.event.issue.number }} --add-label "planifié"
+            Ne modifie aucun autre fichier du repo. Ne code rien.
+          claude_args: >-
+            --model claude-sonnet-5-5 --max-turns 10
+            --allowedTools "Read,Write(plan.md),Bash(gh issue view:*),Bash(gh issue comment:*),Bash(gh issue edit:*)"
