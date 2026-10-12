@@ -17,6 +17,7 @@ MVP : foot à 5, caméra fixe. Voir `docs/roadmap.pdf` et `AGENTS.md`.
 - Python : ruff (lint + format), type hints, pytest. Java : tests JUnit 5. Angular : standalone components, signals.
 - Une PR = une issue. Lier l'issue avec `Closes #N`. Rester sous ~400 lignes modifiées.
 - Toujours ajouter ou mettre à jour les tests du code modifié.
+- Avant d'ouvrir une PR : lancer `ruff check ml`, `ruff format ml` et `pytest ml/tests -q`, et corriger jusqu'à ce que tout passe.
 
 ## Interdits
 - Pousser sur `main`, modifier `.github/workflows/` sans demande, committer des secrets, vidéos ou poids de modèles (`data/`, `*.pt`).

@@ -1,19 +1,19 @@
 # Phase 0 — Checklist (≈ 1 semaine)
 
 ## 1. Repo (jour 1)
-- [ ] Créer le repo GitHub (privé au début, public au lancement)
-- [ ] Pousser ce squelette sur `main`
-- [ ] `./scripts/setup_labels.sh`
-- [ ] Protéger `main` : PR obligatoire, 1 review, CI verte (Settings → Branches / Rulesets)
-- [ ] Remplacer `@TON_PSEUDO` dans `.github/CODEOWNERS`
-- [ ] Créer un GitHub Project (Kanban) : Backlog · Planifié · En cours · Review · Done
-- [ ] Copier le PDF roadmap dans `docs/`
+- [✅] Créer le repo GitHub (privé au début, public au lancement)
+- [✅] Pousser ce squelette sur `main`
+- [✅] `./scripts/setup_labels.sh`
+- [✅] Protéger `main` : PR obligatoire, 1 review, CI verte (Settings → Branches / Rulesets)
+- [✅] Remplacer `@TON_PSEUDO` dans `.github/CODEOWNERS`
+- [✅] Créer un GitHub Project (Kanban) : Backlog · Planifié · En cours · Review · Done
+- [✅] Copier le PDF roadmap dans `docs/`
 
 ## 2. Agents GitHub (jour 2)
-- [ ] Installer l'app Claude GitHub sur le repo (ou `/install-github-app` depuis Claude Code)
-- [ ] Ajouter le secret `ANTHROPIC_API_KEY` (ou `CLAUDE_CODE_OAUTH_TOKEN` + modifier les workflows)
-- [ ] Test Dev : issue « ajouter un test pour track.py » → commenter `@claude …` → une PR doit apparaître
-- [ ] Test Reviewer : la PR reçoit une revue automatique
+- [✅] Installer l'app Claude GitHub sur le repo (ou `/install-github-app` depuis Claude Code)
+- [✅] Ajouter le secret `ANTHROPIC_API_KEY` (ou `CLAUDE_CODE_OAUTH_TOKEN` + modifier les workflows)
+- [✅] Test Dev : issue « ajouter un test pour track.py » → commenter `@claude …` → une PR doit apparaître
+- [✅] Test Reviewer : la PR reçoit une revue automatique
 
 ## 3. n8n (jour 3)
 - [ ] `cd infra/n8n && cp .env.example .env && docker compose up -d`
